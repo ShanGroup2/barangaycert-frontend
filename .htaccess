@@ -1,0 +1,18 @@
+<IfModule mod_headers.c>
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';"
+</IfModule>
+
+RewriteEngine On
+
+RewriteCond %{THE_REQUEST} \s/+[^?\s]*backend(?:/|\s) [NC]
+RewriteRule ^backend(?:/|$) - [F,L]
+
+RewriteRule ^api(?:/.*)?$ backend/index.php [QSA,L]
+RewriteRule ^uploads(?:/|$) - [F,L]
+
+RewriteRule ^$ frontend/index.html [L]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+RewriteRule ^(.*)$ frontend/$1 [L]

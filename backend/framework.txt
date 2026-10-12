@@ -1,0 +1,46 @@
+BESCMS Framework Summary
+=======================
+
+1. Project Structure
+--------------------
+- `backend/` contains the PHP API, core libraries, configuration, and database assets.
+- `frontend/` contains the static HTML, CSS, and JavaScript client.
+- The project root serves the frontend and forwards `/api/...` requests to the backend.
+
+2. Backend Entry Point and Routing
+----------------------------------
+- `backend/index.php` is the entry point for API requests.
+- It loads core libraries and configuration, parses the request, and forwards it to the matching module.
+- Routes use RESTful endpoints under `/api/<module>/<action>`.
+- Module controllers register routes using `Route::get()` and `Route::post()`.
+- Dynamic parameters in routes are supported with `{param}` syntax.
+
+3. Backend Module Structure
+---------------------------
+- Each feature is a module in `backend/Services/<Module>-Module/`.
+- Each module contains a controller, model, and response view.
+- Controllers register routes and dispatch requests to models.
+- Models contain business logic and database access.
+- Views format responses, usually as JSON.
+
+4. Core Libraries and Database
+------------------------------
+- Core libraries are in `backend/Libraries/`.
+- Stored procedures are in `backend/Assets/Stored-Procedure/`.
+- Configure the database in `backend/Configuration/Application.Config.php`.
+
+5. Authentication and Uploads
+-----------------------------
+- Authentication uses PHP sessions; auth endpoints are under `/api/auth/`.
+- Residents can upload verification documents; staff review pending accounts from the dashboard.
+- Uploaded identity documents are available to staff through the authenticated verification-document endpoint.
+- Staff can review certificate requests by status, approve or reject with notes, generate approved certificates, and mark claimed certificates complete.
+- Administrators and BHWs can add and update resident records; administrators can browse and export the resident directory.
+- Administrators can assign or remove BHW access for resident accounts.
+- Uploaded files are stored in `backend/uploads/`, which must be writable by PHP.
+
+6. Deployment
+-------------
+- Requires PHP, MySQL, and Apache with `mod_rewrite` and `.htaccess` overrides enabled.
+- Import the stored procedures from `backend/Assets/Stored-Procedure/`.
+- Frontend API requests should use the same-origin `/api` base path.
